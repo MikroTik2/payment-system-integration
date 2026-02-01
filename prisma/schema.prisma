@@ -1,0 +1,122 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URI")
+}
+
+model User {
+  id String @id @default(nanoid())
+
+  name     String
+  email    String @unique
+  password String
+
+  subscription UserSubscription?
+  transactions Transaction[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Plan {
+  id String @id @default(nanoid())
+
+  title       String
+  description String
+
+  features String[]
+
+  monthlyPrice Int @map("monthly_price")
+  yearlyPrice  Int @map("yearly_price")
+
+  isFeatured Boolean @default(false) @map("is_featured")
+
+  subscription UserSubscription[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("plans")
+}
+
+model UserSubscription {
+  id String @id @default(nanoid())
+
+  status SubscriptionStatus @default(PENDING_PAYMENT)
+
+  startAt DateTime? @map("start_at")
+  endAt   DateTime? @map("end_at")
+
+  transactions Transaction[]
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique @map("user_id")
+
+  plan   Plan   @relation(fields: [planId], references: [id], onDelete: Cascade)
+  planId String @map("plan_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("user_subscriptions")
+}
+
+model Transaction {
+  id String @id @default(nanoid())
+
+  amount Int
+
+  provider PaymentProvider
+  status   TransactionStatus @default(PENDING)
+
+  externalId   String? @map("external_id")
+  providerMeta Json?   @map("provider_meta")
+
+  billingPeriod BillingPeriod @map("billing_period")
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  subscription   UserSubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  subscriptionId String           @map("subscription_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("transaction")
+}
+
+enum PaymentProvider {
+  MONOBANK
+
+  @@map("payment_providers")
+}
+
+enum SubscriptionStatus {
+  PENDING_PAYMENT
+  ACTIVE
+  EXPIRED
+
+  @@map("subscription_statuses")
+}
+
+enum TransactionStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+
+  @@map("transaction_statuses")
+}
+
+enum BillingPeriod {
+  MONTHLY
+  YEARLY
+
+  @@map("billing_periods")
+}

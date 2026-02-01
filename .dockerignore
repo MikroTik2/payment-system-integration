@@ -1,0 +1,13 @@
+.git
+.gitignore
+.dockerignore
+
+dist
+node_modules
+coverage
+
+.env
+
+Dockerfile
+README.md
+.eslintrc.js
