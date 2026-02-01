@@ -2,31 +2,42 @@ import type { Plan } from '@prisma/client'
 
 export const plans: Omit<Plan, 'id' | 'createdAt' | 'updatedAt'>[] = [
 	{
-		title: 'Базовый',
-		description: 'Идеально подходит для малых проектов и индивидуальных предпринимателей.',
-		features: ['5 проектов', '10ГБ хранилища', 'Базовая поддержка', 'Доступ к основным функциям'],
+		title: 'Basic',
+		description: 'Perfect for small projects and individual entrepreneurs.',
+		features: [
+			'5 projects',
+			'10GB storage',
+			'Basic support',
+			'Access to core features'
+		],
 		isFeatured: false,
 		monthlyPrice: 858,
 		yearlyPrice: 8168,
 	},
 	{
-		title: 'Профессиональный',
-		description: 'Для растущего бизнеса с расширенными потребностями.',
-		features: ['20 проектов', '50ГБ хранилища', 'Приоритетная поддержка', 'Расширенные функции аналитики', 'Интеграции со сторонними сервисами'],
+		title: 'Professional',
+		description: 'For growing businesses with advanced needs.',
+		features: [
+			'20 projects',
+			'50GB storage',
+			'Priority support',
+			'Advanced analytics features',
+			'Third-party service integrations'
+		],
 		isFeatured: true,
 		monthlyPrice: 1890,
 		yearlyPrice: 17820,
 	},
 	{
-		title: 'Корпоративный',
-		description: 'Полный пакет для крупных компаний и предприятий.',
+		title: 'Enterprise',
+		description: 'A complete package for large companies and enterprises.',
 		features: [
-			'Неограниченное количество проектов',
-			'500ГБ хранилища',
-			'Круглосуточная поддержка 24/7',
-			'Персональный менеджер',
-			'Расширенные инструменты безопасности',
-			'Кастомные интеграции'
+			'Unlimited projects',
+			'500GB storage',
+			'24/7 support',
+			'Dedicated account manager',
+			'Advanced security tools',
+			'Custom integrations'
 		],
 		isFeatured: false,
 		monthlyPrice: 4290,
