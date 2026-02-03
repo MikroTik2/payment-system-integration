@@ -1,3 +1,4 @@
+import { StringValue } from '@/shared/utils'
 import { Inject, Injectable, Logger, type OnModuleDestroy, type OnModuleInit } from '@nestjs/common'
 import Redis from 'ioredis'
 
@@ -38,7 +39,7 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
 		return await this.redis.del(key)
 	}
 
-	public async setTokenToBlackList(token: string, exp: number) {
+	public async setTokenToBlackList(token: string, exp: StringValue) {
 		return await this.redis.set(token, 'true', 'EX', exp)
 	}
 }

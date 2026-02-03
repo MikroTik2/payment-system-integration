@@ -4,6 +4,8 @@ import { NestFactory } from '@nestjs/core'
 import type { NestExpressApplication } from '@nestjs/platform-express'
 
 import { AppModule } from '@/app.module'
+import { getCorsConfig } from './config'
+import { setupSwagger } from './shared/utils'
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -14,6 +16,9 @@ async function bootstrap() {
 	const logger = new Logger(AppModule.name)
 
 	app.useGlobalPipes(new ValidationPipe())
+	app.enableCors(getCorsConfig(config))
+
+	setupSwagger(app)
 
 	const port = config.getOrThrow<number>('HTTP_PORT')
 	const host = config.getOrThrow<string>('HTTP_HOST')

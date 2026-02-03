@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 
-import { InfraModule } from '@/infra/infra.module'
 import { appEnv, monobankEnv, jwtEnv, redisEnv } from '@/config/env'
 import { IS_DEV_ENV } from '@/shared/utils'
+
+import { InfraModule } from '@/infra/infra.module'
 import { LibsModule } from '@/libs/libs.module'
+import { ApiModule } from '@/api/api.module'
 
 @Module({
 	imports: [
@@ -14,6 +16,7 @@ import { LibsModule } from '@/libs/libs.module'
 			load: [appEnv, redisEnv, monobankEnv, jwtEnv]
 		}),
 		
+		ApiModule,
 		InfraModule,
 		LibsModule
 	]

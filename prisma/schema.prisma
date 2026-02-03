@@ -17,6 +17,8 @@ model User {
   subscription UserSubscription?
   transactions Transaction[]
 
+  PasswordReset PasswordReset?
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -71,11 +73,8 @@ model Transaction {
 
   amount Int
 
-  provider PaymentProvider
-  status   TransactionStatus @default(PENDING)
-
-  externalId   String? @map("external_id")
-  providerMeta Json?   @map("provider_meta")
+  status   TransactionStatus @default(CREATED)
+  externalId   String? @unique @map("external_id")
 
   billingPeriod BillingPeriod @map("billing_period")
 
@@ -91,10 +90,19 @@ model Transaction {
   @@map("transaction")
 }
 
-enum PaymentProvider {
-  MONOBANK
+model PasswordReset {
+  id String @id @default(uuid())
 
-  @@map("payment_providers")
+  token  String   @unique
+  expiry DateTime
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique @map("user_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("password_resets")
 }
 
 enum SubscriptionStatus {
@@ -106,10 +114,13 @@ enum SubscriptionStatus {
 }
 
 enum TransactionStatus {
-  PENDING
-  SUCCEEDED
-  FAILED
-  CANCELLED
+  CREATED
+  PROCESSING
+  HOLD
+  SUCCESS
+  FAILURE
+  REVERSED
+  EXPIRED
 
   @@map("transaction_statuses")
 }
