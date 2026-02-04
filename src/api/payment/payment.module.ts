@@ -6,6 +6,7 @@ import { getMonobankConfig } from '@/config'
 
 import { PaymentController } from './payment.controller'
 import { PaymentService } from './payment.service'
+
 import { WebhookModule } from './webhook/webhook.module'
 
 @Module({

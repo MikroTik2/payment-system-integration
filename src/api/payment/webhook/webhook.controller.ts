@@ -20,6 +20,7 @@ export class WebhookController {
 	@HttpCode(HttpStatus.OK)
 	public async handleMonobankWebhook(@Req() req: any, @Headers('x-sign') xSign: string, @Ip() ip: string) {
 		const rawBody = req.rawBody?.toString('utf8')
+		console.log(rawBody,xSign, ip)
 
 		await this.webhookService.handleMonobank({
 			rawBody,

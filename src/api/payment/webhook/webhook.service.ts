@@ -15,6 +15,8 @@ export class WebhookService {
      ) {}
 
      public async handleMonobank({ rawBody, signature, payload, ip }: { rawBody: string; signature: string; payload: any, ip: string }) {
+		console.log(payload)
+		console.log(ip)
           this.logger.log(`Received Monobank webhook: ${payload.reference}`)
 
           this.validator.validateMonobank(ip)
@@ -26,26 +28,26 @@ export class WebhookService {
 		}
 
 		if (payload.status === 'created') {
-			this.logger.warn(`Payment created: ${payload.reference}`)
-			return await this.updateStatus(payload.reference, TransactionStatus.CREATED)
+			this.logger.warn(`Payment created: ${payload.subscriptionId}`)
+			return await this.updateStatus(payload.subscriptionId, TransactionStatus.CREATED)
 		} else if (payload.status === 'processing') {
-			this.logger.warn(`Payment processing: ${payload.reference}`)
-			return await this.updateStatus(payload.reference, TransactionStatus.PROCESSING)
+			this.logger.warn(`Payment processing: ${payload.subscriptionId}`)
+			return await this.updateStatus(payload.subscriptionId, TransactionStatus.PROCESSING)
 		} else if (payload.status === 'hold') {
-			this.logger.warn(`Payment hold: ${payload.reference}`)
-			return await this.updateStatus(payload.reference, TransactionStatus.HOLD)
+			this.logger.warn(`Payment hold: ${payload.subscriptionId}`)
+			return await this.updateStatus(payload.subscriptionId, TransactionStatus.HOLD)
 		} else if (payload.status === 'success') {
-			this.logger.log(`Payment succeeded: ${payload.invoiceId}`)
-			return await this.updateStatus(payload.reference, TransactionStatus.HOLD)
+			this.logger.log(`Payment succeeded: ${payload.subscriptionId}`)
+			return await this.updateStatus(payload.subscriptionId, TransactionStatus.HOLD)
 		} else if (payload.status === 'failure') {
-			this.logger.warn(`Payment failure: ${payload.reference}`)
-			return await this.updateStatus(payload.reference, TransactionStatus.FAILURE)
+			this.logger.warn(`Payment failure: ${payload.subscriptionId}`)
+			return await this.updateStatus(payload.subscriptionId, TransactionStatus.FAILURE)
 		} else if (payload.status === 'reversed') {
-			this.logger.warn(`Payment reversed: ${payload.reference}`)
-			return await this.updateStatus(payload.reference, TransactionStatus.REVERSED)
+			this.logger.warn(`Payment reversed: ${payload.subscriptionId}`)
+			return await this.updateStatus(payload.subscriptionId, TransactionStatus.REVERSED)
 		} else if (payload.status === 'expired') {
-			this.logger.warn(`Payment expired: ${payload.reference}`)
-			return await this.updateStatus(payload.reference, TransactionStatus.EXPIRED)
+			this.logger.warn(`Payment expired: ${payload.subscriptionId}`)
+			return await this.updateStatus(payload.subscriptionId, TransactionStatus.EXPIRED)
 		}
      }
 

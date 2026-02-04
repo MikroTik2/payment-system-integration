@@ -11,8 +11,8 @@ export const plans: Omit<Plan, 'id' | 'createdAt' | 'updatedAt'>[] = [
 			'Access to core features'
 		],
 		isFeatured: false,
-		monthlyPrice: 858,
-		yearlyPrice: 8168,
+		monthlyPrice: 52,
+		yearlyPrice: 1488,
 	},
 	{
 		title: 'Professional',

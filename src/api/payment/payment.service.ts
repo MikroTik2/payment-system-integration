@@ -13,8 +13,10 @@ export class PaymentService {
           private readonly prismaService: PrismaService
      ) {}
 
-     public async create(dto: InitPaymentRequest, user: User) {
+     public async init(dto: InitPaymentRequest, user: User) {
 		const { planId, billingPeriod } = dto
+
+		console.log(dto, user)
 
 		const plan = await this.prismaService.plan.findUnique({
 			where: {
@@ -59,8 +61,12 @@ export class PaymentService {
 		})
 
           const payment = await this.monobankService.subscriptions.create({
-               amount,
+               amount: amount * 100,
 			interval,
+			webhookUrls: {
+				statusUrl: 'https://7b76-91-200-52-1.ngrok-free.app/webhook/monobank',
+				chargeUrl: 'https://7b76-91-200-52-1.ngrok-free.app/webhook/monobank'
+			},
 			redirectUrl: `${this.configService.getOrThrow<string>('HTTP_CORS').split(',')[0]}/thanks`
 		})
 

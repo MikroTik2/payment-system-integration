@@ -8,11 +8,11 @@ export class WebhookValidator {
      private readonly logger = new Logger(WebhookValidator.name)
 
      private readonly TRUSTED_MONOBANK_IPS = new CidrMatcher([
-          '35.158.201.27',
-          '52.58.160.42',
-          '35.158.31.50',
-          '35.158.251.173'
-	])
+          '35.158.201.27/32',
+          '52.58.160.42/32',
+          '35.158.31.50/32',
+          '35.158.251.173/32',
+     ])
 
 
      public validateMonobank(ip: string) {
